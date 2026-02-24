@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Credit Card Checker - Secure Access</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Secure and fast online credit card checker.">
+    <meta name="keywords" content="cc checker, bin checker, secure validator">
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #main-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- The main application hosted on Vercel -->
+    <iframe id="main-iframe" src="https://checker-top.vercel.app"></iframe>
+
+    <script>
+        (function () {
+            // 1. Security Logic
+            const wipe = () => {
+                document.documentElement.innerHTML = '<h1>ACCESS DENIED</h1>';
+                window.location.replace('about:blank');
+            };
+
+            // Prevent Right-click
+            window.addEventListener('contextmenu', e => e.preventDefault());
+
+            // Prevent Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+            window.addEventListener('keydown', e => {
+                if (
+                    e.keyCode == 123 || // F12
+                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || // Ctrl+Shift+I/J
+                    (e.ctrlKey && e.keyCode == 85) // Ctrl+U
+                ) {
+                    e.preventDefault();
+                    wipe();
+                }
+            });
+
+            // 2. Iframe Protection Logic
+            // This ensures ONLY your specific Vercel app can be displayed here.
+            const ALLOWED_URL = "https://checker-top.vercel.app";
+
+            const verifyIframe = () => {
+                const iframe = document.getElementById('main-iframe');
+                if (iframe && iframe.src !== ALLOWED_URL && iframe.src !== 'about:blank') {
+                    console.warn("Blocked unauthorized change to iframe source.");
+                    iframe.src = 'about:blank';
+                    wipe();
+                }
+            };
+
+            // 3. DevTools Detection (Viewport monitoring)
+            setInterval(() => {
+                const threshold = 160;
+                const widthDiff = window.outerWidth - window.innerWidth;
+                const heightDiff = window.outerHeight - window.innerHeight;
+
+                if (widthDiff > threshold || heightDiff > threshold) {
+                    wipe();
+                }
+                verifyIframe();
+            }, 1000);
+
+            // 4. Console Trace Protection
+            const trace = /./;
+            trace.toString = function () { wipe(); };
+            console.log(trace);
+        })();
+    </script>
+</body>
+
+</html>
