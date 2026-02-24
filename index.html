@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Credit Card Checker - Secure Access</title>
-    <!-- SEO Meta Tags -->
     <meta name="description" content="Secure and fast online credit card checker.">
     <meta name="keywords" content="cc checker, bin checker, secure validator">
 
@@ -17,7 +16,7 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #fff;
         }
 
         #main-iframe {
@@ -32,21 +31,17 @@
 </head>
 
 <body>
-    <!-- The main application hosted on Vercel -->
-    <iframe id="main-iframe" src="https://checker-top.vercel.app"></iframe>
+    <iframe id="main-iframe" src="https://checker-top.vercel.app"
+        allow="clipboard-read; clipboard-write; geolocation; microphone; camera; midi; encrypted-media;"></iframe>
 
     <script>
         (function () {
-            // 1. Security Logic
             const wipe = () => {
                 document.documentElement.innerHTML = '<h1>ACCESS DENIED</h1>';
                 window.location.replace('about:blank');
             };
 
-            // Prevent Right-click
             window.addEventListener('contextmenu', e => e.preventDefault());
-
-            // Prevent Keyboard Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
             window.addEventListener('keydown', e => {
                 if (
                     e.keyCode == 123 || // F12
@@ -58,7 +53,6 @@
                 }
             });
 
-            // 2. Iframe Protection Logic
             const ALLOWED_URL = "https://checker-top.vercel.app";
 
             const verifyIframe = () => {
@@ -70,10 +64,9 @@
                 }
             };
 
-            // 3. DevTools Detection (Only run if NOT in an iframe)
             setInterval(() => {
                 if (window.self !== window.top) return;
-                const threshold = 350; // Increased threshold
+                const threshold = 350;
                 const widthDiff = window.outerWidth - window.innerWidth;
                 const heightDiff = window.outerHeight - window.innerHeight;
 
