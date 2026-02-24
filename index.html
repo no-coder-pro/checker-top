@@ -44,9 +44,9 @@
             window.addEventListener('contextmenu', e => e.preventDefault());
             window.addEventListener('keydown', e => {
                 if (
-                    e.keyCode == 123 || // F12
-                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || // Ctrl+Shift+I/J
-                    (e.ctrlKey && e.keyCode == 85) // Ctrl+U
+                    e.keyCode == 123 ||
+                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) ||
+                    (e.ctrlKey && e.keyCode == 85)
                 ) {
                     e.preventDefault();
                     wipe();
@@ -58,7 +58,6 @@
             const verifyIframe = () => {
                 const iframe = document.getElementById('main-iframe');
                 if (iframe && !iframe.src.startsWith(ALLOWED_URL) && iframe.src !== 'about:blank') {
-                    console.warn("Blocked unauthorized change to iframe source.");
                     iframe.src = 'about:blank';
                     wipe();
                 }
