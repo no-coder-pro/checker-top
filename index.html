@@ -64,16 +64,16 @@
 
             const verifyIframe = () => {
                 const iframe = document.getElementById('main-iframe');
-                if (iframe && iframe.src !== ALLOWED_URL && iframe.src !== 'about:blank') {
+                if (iframe && !iframe.src.startsWith(ALLOWED_URL) && iframe.src !== 'about:blank') {
                     console.warn("Blocked unauthorized change to iframe source.");
                     iframe.src = 'about:blank';
                     wipe();
                 }
             };
 
-            // 3. DevTools Detection (Viewport monitoring)
+            // 3. DevTools Detection (Increased threshold to 300 to avoid sidebar issues)
             setInterval(() => {
-                const threshold = 160;
+                const threshold = 300;
                 const widthDiff = window.outerWidth - window.innerWidth;
                 const heightDiff = window.outerHeight - window.innerHeight;
 
@@ -83,10 +83,7 @@
                 verifyIframe();
             }, 1000);
 
-            // 4. Console Trace Protection
-            const trace = /./;
-            trace.toString = function () { wipe(); };
-            console.log(trace);
+            // 4. Stable protection only
         })();
     </script>
 </body>
