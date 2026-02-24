@@ -59,7 +59,6 @@
             });
 
             // 2. Iframe Protection Logic
-            // This ensures ONLY your specific Vercel app can be displayed here.
             const ALLOWED_URL = "https://checker-top.vercel.app";
 
             const verifyIframe = () => {
@@ -71,19 +70,19 @@
                 }
             };
 
-            // 3. DevTools Detection (Increased threshold to 300 to avoid sidebar issues)
+            // 3. DevTools Detection (Only run if NOT in an iframe)
             setInterval(() => {
-                const threshold = 300;
+                if (window.self !== window.top) return;
+                const threshold = 350; // Increased threshold
                 const widthDiff = window.outerWidth - window.innerWidth;
                 const heightDiff = window.outerHeight - window.innerHeight;
 
                 if (widthDiff > threshold || heightDiff > threshold) {
                     wipe();
                 }
-                verifyIframe();
             }, 1000);
 
-            // 4. Stable protection only
+            setInterval(verifyIframe, 2000);
         })();
     </script>
 </body>
