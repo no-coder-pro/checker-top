@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Credit Card Checker - Secure Access</title>
+    <meta name="description" content="Secure and fast online credit card checker.">
+    <meta name="keywords" content="cc checker, bin checker, secure validator">
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        #main-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <iframe id="main-iframe" src="https://checker-top.vercel.app"
+        allow="clipboard-read; clipboard-write; geolocation; microphone; camera; midi; encrypted-media;"></iframe>
+
+    <script>
+        (function () {
+            const wipe = () => {
+                document.documentElement.innerHTML = '<h1>ACCESS DENIED</h1>';
+                window.location.replace('about:blank');
+            };
+
+            window.addEventListener('contextmenu', e => e.preventDefault());
+            window.addEventListener('keydown', e => {
+                if (
+                    e.keyCode == 123 ||
+                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) ||
+                    (e.ctrlKey && e.keyCode == 85)
+                ) {
+                    e.preventDefault();
+                    wipe();
+                }
+            });
+
+            const ALLOWED_URL = "https://checker-top.vercel.app";
+
+            const verifyIframe = () => {
+                const iframe = document.getElementById('main-iframe');
+                if (iframe && !iframe.src.startsWith(ALLOWED_URL) && iframe.src !== 'about:blank') {
+                    iframe.src = 'about:blank';
+                    wipe();
+                }
+            };
+
+            setInterval(() => {
+                if (window.self !== window.top) return;
+                const threshold = 350;
+                const widthDiff = window.outerWidth - window.innerWidth;
+                const heightDiff = window.outerHeight - window.innerHeight;
+
+                if (widthDiff > threshold || heightDiff > threshold) {
+                    wipe();
+                }
+            }, 1000);
+
+            setInterval(verifyIframe, 2000);
+        })();
+    </script>
+</body>
+
+</html>
